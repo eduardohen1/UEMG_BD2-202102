@@ -127,6 +127,72 @@ where
 
 select * from mensagens;
 
+-- continuação 06/12/2021:
+use escola;
+DELIMITER $
+create trigger msg_avaliacao_aluno_del
+after delete on avaliacaoturma 
+for each row
+begin 
+	insert into mensagens(id_aluno, dt_mensagem, mensagem)
+		select 
+			old.id_aluno,
+			now(),
+			concat('Nota da avalição ', av.descricao, ' foi excluída!',
+			       ' Nota antiga: ',old.nota)
+		from
+			avaliacaoturma avt
+				inner join avaliacao av on avt.id_avaliacao = av.id_avaliacao 
+		where 
+			avt.id_avaliacao = old.id_avaliacao and 
+			avt.id_aluno     = old.id_aluno;
+end$
+DELIMITER ;
+
+select * from avaliacaoturma;
+select * from mensagens;
+
+delete from avaliacaoturma 
+where 
+	id_avaliacao  = 1 and 
+	id_aluno      = 7 and 
+	id_turma      = 1 and 
+	id_disciplina = 1;
+
+select * from mensagens;
+
+insert into avaliacaoturma (id_avaliacao, id_aluno, id_turma, id_disciplina,
+                            dt_avaliacao, nota)
+values(1,7,1,1,now(),15);
+drop trigger msg_avaliacao_aluno_del;
+
+DELIMITER $
+create trigger msg_avaliacao_aluno_del
+after delete on avaliacaoturma 
+for each row
+begin 
+	insert into mensagens(id_aluno, dt_mensagem, mensagem)
+		select 
+			old.id_aluno,
+			now(),
+			concat('Nota da avalição ', av.descricao, ' foi excluída!')
+		from
+			avaliacao av 
+		where 
+			av.id_avaliacao = old.id_avaliacao;
+end$
+DELIMITER ;
+
+delete from avaliacaoturma 
+where 
+	id_avaliacao  = 1 and 
+	id_aluno      = 7 and 
+	id_turma      = 1 and 
+	id_disciplina = 1;
+
+select * from mensagens;
+
+
 
 
 
