@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "d4fca306-8b65-47ae-9cca-5e83d0a45e69": {
+      "ProjectGuid": "d4fca306-8b65-47ae-9cca-5e83d0a45e69",
+      "DisplayName": "ConexaoMongoBD",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
